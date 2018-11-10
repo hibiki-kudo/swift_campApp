@@ -20,6 +20,9 @@ class memberViewController2: UIViewController ,UIPickerViewDelegate,UIPickerView
         picker.delegate = self
         picker.dataSource = self
         
+        let userDefault = UserDefaults.standard
+        userDefault.set(Int(dataList[0]),forKey:"players2")
+        
     }
     
     // UIPickerViewの列の数
@@ -56,6 +59,7 @@ class memberViewController2: UIViewController ,UIPickerViewDelegate,UIPickerView
     }
     
     @IBAction func startGame(_ sender: Any) {
+
         performSegue(withIdentifier: "start2", sender: nil)
     }
 

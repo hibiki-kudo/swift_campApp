@@ -19,6 +19,8 @@ class memberViewController1: UIViewController,UIPickerViewDelegate, UIPickerView
         picker.delegate = self
         picker.dataSource = self
 
+        let userDefault = UserDefaults.standard
+        userDefault.set(Int(dataList[0]),forKey:"players1")
     }
     
     // UIPickerViewの列の数

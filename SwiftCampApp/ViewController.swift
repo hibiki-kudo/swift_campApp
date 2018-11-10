@@ -18,9 +18,14 @@ class memberViewController1: UIViewController,UIPickerViewDelegate, UIPickerView
         
         picker.delegate = self
         picker.dataSource = self
-
-        let userDefault = UserDefaults.standard
-        userDefault.set(Int(dataList[0]),forKey:"players1")
+        
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(Int(dataList[0]),forKey:"players1")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        loadView()
+        viewDidLoad()
     }
     
     // UIPickerViewの列の数
@@ -52,12 +57,10 @@ class memberViewController1: UIViewController,UIPickerViewDelegate, UIPickerView
         print(userDefault.object(forKey: "players1"))
     }
 
-    @IBAction func StartGameButton(_ sender: Any) {
-        performSegue(withIdentifier: "start", sender: nil)
-    }
     
     @IBAction func Back(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
 }
 

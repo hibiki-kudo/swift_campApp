@@ -30,13 +30,14 @@ class GameViewController2: UIViewController {
     var startAudioPlayer: AVAudioPlayer = AVAudioPlayer()
     var startAccel: Bool = false
     var speed:Double = 0
-    var subAccel:Double = 0
+//    var subAccel:Double = 0
     var synthetic:Double = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let barItem = UINavigationItem()
         barItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,  target: self, action: #selector(redoMessage))
+        speed = 0
         if userDefault.object(forKey: "players2")  as? Int != nil{
             playerNum = userDefault.object(forKey: "players2") as! Int
         }else{
@@ -49,7 +50,8 @@ class GameViewController2: UIViewController {
     func playerDicision(){
         if nowPlayer > playerNum && playerNum != 1{
             Victory()
-            PlayerLabel.text = "プレイヤー\(self.nowPlayer)さんの勝利です"
+            PlayerLabel.text = ""
+            Alert(message: "プレイヤー\(self.nowPlayer)さんの勝利です", funcDici: 1)
             nowPlayer = 1
             userDefault.removeObject(forKey: "result2")
         }else if playerNum == 1{
@@ -64,6 +66,7 @@ class GameViewController2: UIViewController {
         guard let victoryPlayer = userDefault.object(forKey: "result2") as? [Double] else{
             return
         }
+        nowPlayer -= 1
         var counter = 0
         var maxSpeed:Double = 0
         for i in victoryPlayer{
@@ -115,12 +118,16 @@ class GameViewController2: UIViewController {
                     //現加速度を保存
                     self.synthetic = (abs(x) + abs(y) + abs(z))
                     //print(synthetic)
-                    self.subAccel = (abs(x) + abs(y) + abs(z))
-                    self.speed += self.synthetic
+                    //self.subAccel = (abs(x) + abs(y) + abs(z))
+                    print(self.synthetic)
+                    if self.speed < self.synthetic{
+                        self.speed = self.synthetic
+                        print(self.synthetic)
+                    }
                     //                    self.audioPlayer.currentTime = 0
                     //                    self.audioPlayer.play()
                     
-                    self.speedLabel.text = String(format:"%.1fkm",self.speed)
+                    self.speedLabel.text = String(format:"%.1fkm",self.speed*10)
                 }
                 
                 if abs(x) < 0.3 && abs(y) < 0.3 && abs(z) < 0.3{
@@ -131,6 +138,9 @@ class GameViewController2: UIViewController {
     }
     
     func Alert(message: String,funcDici: Int){
+        if (motionManager.isAccelerometerActive) {
+            motionManager.stopAccelerometerUpdates()
+        }
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action: UIAlertAction) -> Void in
             if funcDici == 1{

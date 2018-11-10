@@ -101,7 +101,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="ゲームを始める"/>
                                 <connections>
-                                    <action selector="StartGameButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xCY-py-ls0"/>
                                     <action selector="startGame:" destination="pZN-5a-NBZ" eventType="touchUpInside" id="gl7-aG-fwP"/>
                                 </connections>
                             </button>
@@ -272,7 +271,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="ゲームを始める"/>
                                 <connections>
-                                    <action selector="StartGameButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5VC-h8-nnF"/>
+                                    <segue destination="sDV-mN-eh1" kind="show" id="WLB-SZ-Dje"/>
                                 </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0EG-3t-OOX">
@@ -316,7 +315,6 @@
                     </view>
                     <connections>
                         <outlet property="picker" destination="0EG-3t-OOX" id="VtR-DL-ZQU"/>
-                        <segue destination="sDV-mN-eh1" kind="show" identifier="start" id="jn0-CK-3kn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -415,6 +413,7 @@
                         <outlet property="Bar" destination="Q1G-zw-5nY" id="HdD-AB-7Ra"/>
                         <outlet property="PlayerLabel" destination="AZk-Jo-ch6" id="Id8-gd-wCt"/>
                         <outlet property="PlayerView" destination="oK6-bI-TC6" id="oY0-st-q7U"/>
+                        <outlet property="gameStartButton" destination="qL6-xU-0Xl" id="ml3-4z-7Q3"/>
                         <outlet property="pointLabel" destination="GoC-9G-LL9" id="dNE-UK-zx5"/>
                         <outlet property="timerLabel" destination="91s-b9-E5H" id="cp0-lo-tDI"/>
                     </connections>

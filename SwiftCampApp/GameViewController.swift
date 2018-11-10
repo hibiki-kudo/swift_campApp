@@ -17,8 +17,9 @@ class GameViewController: UIViewController {
     @IBOutlet weak var PlayerView: UIView!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var pointLabel: UILabel!
+    @IBOutlet weak var gameStartButton: UIButton!
     let userDefault = UserDefaults.standard
-    var pleyerNum:Int = 0
+    var pleyerNum:Int = 1
     var nowPlayer:Int = 1
     var point:Double = 0
     var timer:Timer!
@@ -36,10 +37,12 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         let barItem = UINavigationItem()
         barItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,  target: self, action: #selector(redoMessage))
+        
         pleyerNum = userDefault.object(forKey: "players1") as! Int
         Bar.rightBarButtonItems = barItem.rightBarButtonItems
         timerLabel.text = "10"
         pointLabel.text = "0"
+        point = 0
         //登録
         playerDicision()
         
@@ -48,14 +51,16 @@ class GameViewController: UIViewController {
     func playerDicision(){
         if nowPlayer > pleyerNum && pleyerNum != 1{
             Victory()
-            PlayerLabel.text = "プレイヤー\(self.nowPlayer)さんの勝利です"
+            PlayerLabel.text = ""
+            Alert(message: "プレイヤー\(self.nowPlayer)さんの勝利です", funcDici: 1)
             nowPlayer = 1
             userDefault.removeObject(forKey: "result1")
         }else if pleyerNum == 1{
+            nowPlayer = 1
             PlayerLabel.text = "プレイヤー\(nowPlayer)さんの番です"
         }else{
             PlayerLabel.text = "プレイヤー\(nowPlayer)さんの番です"
-            nowPlayer += 1
+            self.nowPlayer += 1
         }
     }
     
@@ -63,14 +68,18 @@ class GameViewController: UIViewController {
         guard let victoryPlayer = userDefault.object(forKey: "result1") as? [Double] else{
             return
         }
-        var counter = 0
+        print(nowPlayer)
+        nowPlayer -= 1
+        var counter = 1
         var maxPoint:Double = 0
         for i in victoryPlayer{
-            counter += 1
+            print(i)
             if i > maxPoint{
                 self.nowPlayer = counter
                 maxPoint = i
+                print("if通りましたよ")
             }
+            counter += 1
             print(nowPlayer)
         }
     }
@@ -90,17 +99,23 @@ class GameViewController: UIViewController {
                 let z = acc.acceleration.z
                 let synthetic = abs(x) + abs(y) +  abs(z)
                 
-                if synthetic <= 4{
+                if synthetic <= 1.5 && synthetic > 1.1{
                     self.startAccel = true
                     
                 //    self.audioPlayer.currentTime = 0
                 //    self.audioPlayer.play()
-                    self.point += synthetic
+                    
+                    self.point += synthetic * 10
+                    
+                    print(synthetic)
                 }
-                self.pointLabel.text = String(format:"%.0",self.point)
-                if self.startAccel == true && synthetic > 4{
+                
+                self.pointLabel.text = String(format:"%.1f",self.point)
+                
+                if synthetic > 1.5{
                     self.startAccel = false
                     self.Alert(message: "終了です", funcDici: 1)
+                    self.timer.invalidate()
                     
                 }
             }
@@ -108,6 +123,9 @@ class GameViewController: UIViewController {
     }
     
     func Alert(message: String,funcDici: Int){
+        if (motionManager.isAccelerometerActive) {
+            motionManager.stopAccelerometerUpdates()
+        }
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action: UIAlertAction) -> Void in
             if funcDici == 1{
@@ -131,18 +149,21 @@ class GameViewController: UIViewController {
             }else{
                 userDefault.set([point],forKey:"result1")
             }
+            if gameStartButton.isEnabled == false{
+                self.timer.invalidate()
+            }
             loadView()
             viewDidLoad()
         }
     }
     
     func restart(){
+        userDefault.removeObject(forKey: "result1")
+        userDefault.removeObject(forKey: "players1")
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func OptionButton(_ sender: Any) {
-        userDefault.removeObject(forKey: "result1")
-        userDefault.removeObject(forKey: "players1")
         Alert(message: "本当にやり直しますか？",funcDici: 2)
     }
     
@@ -159,8 +180,11 @@ class GameViewController: UIViewController {
     @IBAction func PlayerStartButton(_ sender: Any) {
         PlayerApear()
     }
+    
     @IBAction func gameStartButton(_ sender: Any) {
+        gameStartButton.isEnabled = false
         TimerStart()
+        startGetAccelerometer()
     }
     
     func TimerStart(){

@@ -25,6 +25,11 @@ class memberViewController2: UIViewController ,UIPickerViewDelegate,UIPickerView
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        loadView()
+        viewDidLoad()
+    }
+    
     // UIPickerViewの列の数
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

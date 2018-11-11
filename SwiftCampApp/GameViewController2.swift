@@ -15,7 +15,6 @@ class GameViewController2: UIViewController {
     @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var PlayerLabel: UILabel!
     @IBOutlet weak var Bar: UINavigationItem!
-    @IBOutlet var nextPlayerButton: [UIButton]!
     @IBOutlet weak var speedLabel: UILabel!
     @IBOutlet var throwButton: [UIButton]!
     
@@ -30,7 +29,7 @@ class GameViewController2: UIViewController {
     var startAudioPlayer: AVAudioPlayer = AVAudioPlayer()
     var startAccel: Bool = false
     var speed:Double = 0
-//    var subAccel:Double = 0
+    //    var subAccel:Double = 0
     var synthetic:Double = 0
     
     override func viewDidLoad() {
@@ -38,11 +37,9 @@ class GameViewController2: UIViewController {
         let barItem = UINavigationItem()
         barItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop,  target: self, action: #selector(redoMessage))
         speed = 0
-        if userDefault.object(forKey: "players2")  as? Int != nil{
-            playerNum = userDefault.object(forKey: "players2") as! Int
-        }else{
-            playerNum = 1
-        }
+        synthetic = 0
+        playerNum = userDefault.object(forKey: "players2") as! Int
+        
         Bar.rightBarButtonItems = barItem.rightBarButtonItems
         playerDicision()
     }
@@ -51,14 +48,15 @@ class GameViewController2: UIViewController {
         if nowPlayer > playerNum && playerNum != 1{
             Victory()
             PlayerLabel.text = ""
-            Alert(message: "プレイヤー\(self.nowPlayer)さんの勝利です", funcDici: 1)
-            nowPlayer = 1
             userDefault.removeObject(forKey: "result2")
+            Alert(message: "プレイヤー\(self.nowPlayer)さんの勝利です", funcDici: 2)
+            nowPlayer = 1
         }else if playerNum == 1{
+            nowPlayer = 1
             PlayerLabel.text = "プレイヤー\(nowPlayer)さんの番です"
         }else{
             PlayerLabel.text = "プレイヤー\(nowPlayer)さんの番です"
-            nowPlayer += 1
+            self.nowPlayer += 1
         }
     }
     
@@ -66,15 +64,19 @@ class GameViewController2: UIViewController {
         guard let victoryPlayer = userDefault.object(forKey: "result2") as? [Double] else{
             return
         }
-        nowPlayer -= 1
-        var counter = 0
-        var maxSpeed:Double = 0
+        print(victoryPlayer)
+        print(nowPlayer)
+        nowPlayer = 1
+        var counter = 1
+        var maxPoint:Double = 0
         for i in victoryPlayer{
-            counter += 1
-            if i > maxSpeed{
+            print(i)
+            if i > maxPoint{
                 self.nowPlayer = counter
-                maxSpeed = i
+                maxPoint = i
+                print("if通りましたよ")
             }
+            counter += 1
             print(nowPlayer)
         }
     }
@@ -82,25 +84,12 @@ class GameViewController2: UIViewController {
     @objc func redoMessage(){
         Alert(message: "次の人に回しますか？",funcDici: 1)
         
-        if var result = userDefault.object(forKey: "result2") as? [Double]{
-            result.append(speed)
-            userDefault.set(result,forKey:"result2")
-        }else{
-            userDefault.set([speed],forKey:"result2")
-        }
-        
     }
     
     @IBAction func ThrowFastBall(_ sender: Any) {
-        //ボタンを1回押されたら実行、2回目は処理終了
-        var checkBtn:Int?
-        if checkBtn == nil || checkBtn == 0{
+
             startGetAccelerometer()
-            checkBtn = 1
-        }else{
-            checkBtn = 0
-            self.startAccel = false
-        }
+
     }
     
     
@@ -113,7 +102,7 @@ class GameViewController2: UIViewController {
                 let y = acc.acceleration.y
                 let z = acc.acceleration.z
                 //加速度が全方向で最低でも0.3以上計測すると実行
-                if  abs(x) > 0.3 && abs(y) > 0.3 && abs(z) > 0.3 && self.startAccel == false{
+                if  (abs(x) + abs(y) + abs(z)) > 3 && self.startAccel == false{
                     self.startAccel = true
                     //現加速度を保存
                     self.synthetic = (abs(x) + abs(y) + abs(z))
@@ -129,6 +118,7 @@ class GameViewController2: UIViewController {
                     
                     self.speedLabel.text = String(format:"%.1fkm",self.speed*10)
                 }
+                print(self.synthetic)
                 
                 if abs(x) < 0.3 && abs(y) < 0.3 && abs(z) < 0.3{
                     self.startAccel = false
@@ -138,32 +128,43 @@ class GameViewController2: UIViewController {
     }
     
     func Alert(message: String,funcDici: Int){
-        if (motionManager.isAccelerometerActive) {
-            motionManager.stopAccelerometerUpdates()
-        }
+        
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action: UIAlertAction) -> Void in
             if funcDici == 1{
+                if (self.motionManager.isAccelerometerActive) {
+                    self.motionManager.stopAccelerometerUpdates()
+                }
                 self.redoAction(redo: true)
             }else if funcDici == 2{
+                if (self.motionManager.isAccelerometerActive) {
+                    self.motionManager.stopAccelerometerUpdates()
+                }
                 self.restart()
             }
         }))
-        let close = UIAlertAction(title: "閉じる", style: .cancel, handler:  {(action: UIAlertAction) -> Void in
-        })
-        alert.addAction(close)
         present(alert, animated: true, completion: nil)
     }
     
     
     func redoAction(redo: Bool){
         if redo{
+            print("userDefault入れますよ~")
+            if var result = userDefault.object(forKey: "result2") as? [Double]{
+                result.append(speed)
+                userDefault.set(result,forKey:"result2")
+            }else{
+                userDefault.set([speed],forKey:"result2")
+            }
+            
             loadView()
             viewDidLoad()
         }
     }
     
     func restart(){
+        userDefault.removeObject(forKey: "result2")
+        userDefault.removeObject(forKey: "players2")
         dismiss(animated: true, completion: nil)
     }
     
@@ -180,8 +181,6 @@ class GameViewController2: UIViewController {
     }
     
     @IBAction func backButton(_ sender: Any) {
-        userDefault.removeObject(forKey: "result2")
-        userDefault.removeObject(forKey: "players2")
         Alert(message: "本当にやり直しますか？",funcDici: 2)
     }
     
@@ -189,9 +188,7 @@ class GameViewController2: UIViewController {
         PlayerApear()
     }
     
-    @IBAction func NextPlay(_ sender: Any) {
-        redoAction(redo: true)
-    }
+
     
     
 }

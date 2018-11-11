@@ -21,7 +21,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0UU-FC-yYf">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="80"/>
-                                <state key="normal" title="Girons"/>
+                                <state key="normal" title="GyroApp"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -187,14 +187,6 @@
                                     <action selector="ThrowFastBall:" destination="iKb-pN-kly" eventType="touchDown" id="BP8-Ml-bhS"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G2i-I1-QKx">
-                                <rect key="frame" x="111.5" y="519" width="152" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="次の番です"/>
-                                <connections>
-                                    <action selector="NextPlay:" destination="iKb-pN-kly" eventType="touchUpInside" id="VdZ-yh-HhS"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xh8-VR-sMO">
                                 <rect key="frame" x="187.5" y="170" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -231,13 +223,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="bDz-53-VcC" firstAttribute="bottom" secondItem="RMg-7d-eG4" secondAttribute="bottom" id="3mc-dX-MEK"/>
-                            <constraint firstItem="RMg-7d-eG4" firstAttribute="bottom" secondItem="G2i-I1-QKx" secondAttribute="bottom" constant="100" id="Gee-3b-3t1"/>
                             <constraint firstItem="bDz-53-VcC" firstAttribute="leading" secondItem="RMg-7d-eG4" secondAttribute="leading" id="KVN-4n-JOO"/>
                             <constraint firstItem="4ex-Ga-vwL" firstAttribute="centerY" secondItem="u3D-ha-uPJ" secondAttribute="centerY" id="Mks-Yh-bcL"/>
                             <constraint firstItem="xh8-VR-sMO" firstAttribute="centerX" secondItem="u3D-ha-uPJ" secondAttribute="centerX" id="ODJ-G0-DFJ"/>
                             <constraint firstItem="PlD-rR-4Dz" firstAttribute="centerX" secondItem="u3D-ha-uPJ" secondAttribute="centerX" id="Wfw-1s-ipK"/>
                             <constraint firstItem="bDz-53-VcC" firstAttribute="top" secondItem="u3D-ha-uPJ" secondAttribute="top" id="Xzg-bi-zVx"/>
-                            <constraint firstItem="G2i-I1-QKx" firstAttribute="centerX" secondItem="u3D-ha-uPJ" secondAttribute="centerX" id="e37-e1-Wou"/>
                             <constraint firstItem="xh8-VR-sMO" firstAttribute="top" secondItem="u3D-ha-uPJ" secondAttribute="top" constant="170" id="ecF-89-6jc"/>
                             <constraint firstItem="4ex-Ga-vwL" firstAttribute="top" secondItem="PlD-rR-4Dz" secondAttribute="bottom" constant="84" id="ime-j4-Ozq"/>
                             <constraint firstItem="4ex-Ga-vwL" firstAttribute="centerX" secondItem="u3D-ha-uPJ" secondAttribute="centerX" id="kdm-Wp-S72"/>
@@ -250,7 +240,6 @@
                         <outlet property="PlayerLabel" destination="ZEM-f5-sTE" id="auP-IE-dpM"/>
                         <outlet property="playerView" destination="bDz-53-VcC" id="Oqe-iq-YWn"/>
                         <outlet property="speedLabel" destination="PlD-rR-4Dz" id="Isd-qV-Oln"/>
-                        <outletCollection property="nextPlayerButton" destination="G2i-I1-QKx" collectionClass="NSMutableArray" id="gIW-Va-kMU"/>
                         <outletCollection property="throwButton" destination="4ex-Ga-vwL" collectionClass="NSMutableArray" id="0gF-bi-cmT"/>
                     </connections>
                 </viewController>

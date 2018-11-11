@@ -63,14 +63,14 @@
 			isa = PBXGroup;
 			children = (
 				AF24BCCC219556B6004DE8D8 /* AppDelegate.swift */,
+				AF061C8E2196A81100CF7294 /* TitleViewController.swift */,
 				AF24BCCE219556B6004DE8D8 /* ViewController.swift */,
+				AF24BCDE21955848004DE8D8 /* GameViewController.swift */,
+				AFE19C962195EB1100B55460 /* memberViewController2.swift */,
 				AFE19C982195EE2200B55460 /* GameViewController2.swift */,
 				AF24BCD0219556B6004DE8D8 /* Main.storyboard */,
 				AF24BCD3219556B7004DE8D8 /* Assets.xcassets */,
-				AFE19C962195EB1100B55460 /* memberViewController2.swift */,
-				AF061C8E2196A81100CF7294 /* TitleViewController.swift */,
 				AF24BCD5219556B7004DE8D8 /* LaunchScreen.storyboard */,
-				AF24BCDE21955848004DE8D8 /* GameViewController.swift */,
 				AF24BCD8219556B7004DE8D8 /* Info.plist */,
 			);
 			path = SwiftCampApp;

@@ -29,6 +29,7 @@ class TitleViewController: UIViewController {
             self.view.layoutIfNeeded()
             
         }, completion: { (finished: Bool) in
+            print("タイトル振りました")
 
             self.performSegue(withIdentifier: "goGameSelect", sender: nil)
         })
